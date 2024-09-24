@@ -31,6 +31,11 @@ zeek -C -r smallFlows.pcap
 
 Zeek automatically generated several logs (e.g., `conn.log`, `http.log`, `dns.log`, `dhcp.log`). These logs were essential for the deeper analysis performed in the following steps.
 
+- **Image 1**:
+  
+
+
+
 ### 2. DHCP and DNS Log Analysis
 **Objective**: Parse logs to identify patterns in DNS queries and DHCP hostnames.
 
@@ -42,6 +47,10 @@ cat dns.log | zeek-cut query | sort | uniq | wc -l
 ```
 cat dhcp.log | zeek-cut host_name domain | sort -r
 ```
+  
+- **Image 2**: 
+ ![image](https://github.com/user-attachments/assets/9345e92c-ef2d-44ea-9be1-d868db49b371)
+
 
 I also worked with larger flow datasets to study the distribution of hostnames:
 ```
@@ -63,6 +72,11 @@ cat conn.log | zeek-cut uid orig_pkts resp_pkts id.orig_p | sort
 
 These logs were essential for identifying normal traffic patterns and pinpointing anomalies such as long connection durations or suspicious HTTP methods.
 
+- **Image 3**: 
+ ![image](https://github.com/user-attachments/assets/643846f9-d519-4070-9ae4-c6a66d4de590)
+
+
+
 ### 4. Identifying Cleartext Passwords
 I wrote a custom Zeek signature to identify cleartext passwords in HTTP traffic. This signature specifically looked for password-related keywords in unencrypted (HTTP) connections.
 
@@ -78,6 +92,11 @@ signature http-password {
 
 This was particularly useful for detecting unsecured password transmissions in the network, which is a common vulnerability.
 
+- **Image 4**:
+  ![image](https://github.com/user-attachments/assets/3006df3f-1d7f-49ba-86a0-16f8c4eeb690)
+
+
+
 ### 5. Detecting FTP Brute-Force Attacks
 Brute-force attacks are common against FTP servers. I employed Zeek scripts to detect this by analyzing connection patterns in the `ftp.pcap` file. The following command helped identify repeated login attempts (indicative of brute force):
 
@@ -91,6 +110,10 @@ zeek -C -r ftp.pcap -s ftp-admin.sig
 cat notice.log | grep -i "brute" | wc -l
 ```
 
+- **Image 5**:
+  ![image](https://github.com/user-attachments/assets/b370ab14-5c55-4d2d-b9c1-1088b75d9248)
+
+
 ### 6. Advanced Log Parsing and GeoIP Analysis
 To gain insights into geographical patterns in network traffic, I used Zeek to analyze connections by city and IP address:
 
@@ -103,6 +126,10 @@ cat conn.log | zeek-cut geo.resp.city | sort -nr | uniq
 ```
 cat conn.log | zeek-cut geo.resp.city id.resp_h | sort -nr | uniq
 ```
+
+- **Image 6**:
+  ![image](https://github.com/user-attachments/assets/d9409db1-5262-499f-b4fd-683071fd2618)
+
 
 ### 7. Custom Zeek Scripts for Specific Case Analysis
 I used several Zeek scripts tailored to different datasets and attack patterns. For example, I used the `dhcp-hostname.zeek` script for analyzing DHCP traffic:
@@ -127,19 +154,11 @@ zeek -Cr case1.pcap hash-demo.zeek
 
 This combination of log analysis and hashing ensured that I could detect suspicious files being transferred over the network.
 
+- **Image 7**:
+  ![image](https://github.com/user-attachments/assets/61c6179e-bf63-4074-ba09-30f2a704a0ad)
+
+
 ## Results
 
 ### Log Data Visualizations
-As part of the analysis, various images were generated to represent data from the logs:
-
-- **Example Image 1**: 
-  - Dimensions: 1448 x 205 (PNG, Truecolor with alpha)
-- **Example Image 2**:
-  - Dimensions: 2560 x 1271 (PNG, Truecolor)
-
-These visualizations provided a graphical representation of the parsed data, helping to understand the flow and distribution of network traffic.
-
-## Conclusion
-This project highlighted Zeek's ability to efficiently analyze network traffic and detect security threats. Through custom scripting, log parsing, and filtering, I was able to extract critical information about network behavior, detect brute-force attacks, and even uncover cleartext passwords. 
-
-The comprehensive use of Zeek, combined with advanced command-line processing, allowed me to gain deep insights into the network traffic and apply those learnings to broader network security contexts.
+As part of the analysis, various images were generated to represent data from the logs.

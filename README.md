@@ -160,5 +160,22 @@ This combination of log analysis and hashing ensured that I could detect suspici
 
 ## Results
 
-### Log Data Visualizations
-As part of the analysis, various images were generated to represent data from the logs.
+The analysis of the PCAP files using Zeek provided critical insights into network behavior and potential security threats:
+
+1. **DNS and DHCP Traffic**: By analyzing the DNS and DHCP logs, I identified unique hostnames and queries, which helped in mapping the devices and services active within the network. This step also provided clues to understanding the flow of communication between internal and external domains.
+
+2. **HTTP Traffic**: Parsing the `http.log` helped uncover the use of various HTTP methods and identified potential cleartext password transmissions. This highlighted a critical vulnerability in the network's HTTP traffic, suggesting the need for encryption (e.g., HTTPS).
+
+3. **Brute-Force Attack Detection**: The detection of brute-force attempts against FTP servers showed a potential security issue with login mechanisms. By monitoring repeated failed login attempts, Zeek effectively flagged this type of attack, showcasing its utility in real-time threat detection.
+
+4. **GeoIP Analysis**: The GeoIP data provided insights into the geographic origin of connections. This analysis revealed potential anomalies, such as unusual foreign IP addresses interacting with the network, which could indicate unauthorized access attempts or data exfiltration.
+
+5. **Threat Intelligence**: The integration of custom Zeek scripts allowed for the detection of specific malicious patterns, such as executables being transmitted over HTTP and possible malware infections. The calculated hashes from file extractions reinforced the ability to detect known threats using hash-based signatures.
+
+### Conclusion
+Through the use of Zeek, this project successfully demonstrated the effectiveness of network traffic analysis in detecting vulnerabilities and security threats. By systematically parsing various logs and applying custom threat detection signatures, I was able to uncover critical insights about the network's activity, such as potential password leaks, brute-force attacks, and unauthorized foreign access attempts. 
+
+The visual representations and geographic analysis enhanced the understanding of these threats, and the integration of file hashing and threat intelligence further strengthened the analysis, making it possible to detect known malware and anomalies effectively. 
+
+This project underscores the importance of continuous monitoring, the use of encryption, and proactive threat detection mechanisms to secure modern networks.
+
